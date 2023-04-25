@@ -32,6 +32,7 @@ def main():
     clock = pg.time.Clock()
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    #kk_img2 = pg.image.load("ex02/fig/8.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     bb_img = pg.Surface((20, 20))  # 練習１
@@ -45,7 +46,16 @@ def main():
     vx, vy = +1, +1
     kk_rct.center = 900, 400
     tmr = 0
-
+    dl = 0  # こうかとんの向き
+    accs = [a for a in range(1, 11)]
+    bb_imgs = []
+    d = []
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_imgs.append(bb_img)
+    
+    
 
     while True:
         for event in pg.event.get():
@@ -61,8 +71,12 @@ def main():
             for k, mv in delta.items():
               if keylst[k]:
                     kk_rct.move_ip(-mv[0],-mv[1])
+                    
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rct)
+        screen.blit(pg.transform.rotozoom(kk_img, dl, 1.0), kk_rct)
+        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]
+        bb_img = bb_imgs[min(tmr//1000, 9)]
+        bb_img.set_colorkey((0, 0, 0)) 
         bb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(screen.get_rect(), bb_rct)
         if not yoko:  # 縦方向にはみ出ていたら
@@ -70,7 +84,9 @@ def main():
         if not tate:  # 横方向にはみ出ていたら
             vy *= -1
         screen.blit(bb_img, bb_rct)
-        
+        if kk_rct.colliderect(bb_rct):
+            kk_img = pg.transform.rotozoom(pg.image.load("ex02/fig/8.png"), 0, 2.0)
+
 
         pg.display.update()
         clock.tick(1000)
