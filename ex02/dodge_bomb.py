@@ -47,10 +47,10 @@ def main():
     kk_rct.center = 900, 400
     tmr = 0
     dl = 0  # こうかとんの向き
-    accs = [a for a in range(1, 11)]
-    bb_imgs = []
+    accs = [a for a in range(1, 11)]  # 爆弾の加速度のリスト
+    bb_imgs = []  
     d = []
-    for r in range(1, 11):
+    for r in range(1, 11): #拡大爆弾のsurfaceのリスト
         bb_img = pg.Surface((20*r, 20*r))
         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
         bb_imgs.append(bb_img)
@@ -73,9 +73,9 @@ def main():
                     kk_rct.move_ip(-mv[0],-mv[1])
                     
         screen.blit(bg_img, [0, 0])
-        screen.blit(pg.transform.rotozoom(kk_img, dl, 1.0), kk_rct)
-        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]
-        bb_img = bb_imgs[min(tmr//1000, 9)]
+        screen.blit(pg.transform.rotozoom(kk_img, dl, 1.0), kk_rct)  
+        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]  # 爆弾の加速度
+        bb_img = bb_imgs[min(tmr//1000, 9)] 
         bb_img.set_colorkey((0, 0, 0)) 
         bb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(screen.get_rect(), bb_rct)
@@ -86,6 +86,7 @@ def main():
         screen.blit(bb_img, bb_rct)
         if kk_rct.colliderect(bb_rct):
             kk_img = pg.transform.rotozoom(pg.image.load("ex02/fig/8.png"), 0, 2.0)
+            
 
 
         pg.display.update()
