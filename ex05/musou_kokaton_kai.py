@@ -445,7 +445,7 @@ def main():
             if score.score >= i:  # スコアが300の倍数を超える
                 life.life_up()  # 残機が1増える
                 life.update(screen)
-                zankiup.remove(i)
+                zankiup.remove(i)  
 
         for bomb in pg.sprite.spritecollide(bird, bombs, True):
             if (bird.state == "hyper"): # hyperモードの時
